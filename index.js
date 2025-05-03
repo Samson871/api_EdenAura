@@ -1,9 +1,8 @@
 const express = require('express');
-const colors = require('colors');  
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const {connectDB} = require('./config/db.js');
 const cors = require('cors');
+const connectDb  = require("./config/db.js")
 //import routes
 const authRoute = require('./routes/authRoute.js');
 
@@ -11,7 +10,7 @@ const authRoute = require('./routes/authRoute.js');
 dotenv.config();
 
 //connectDB(); //connect to database
-connectDB(); 
+connectDb(); 
 
 //rest objects  
 const app = express(); 
