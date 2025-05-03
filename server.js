@@ -24,11 +24,15 @@ app.use(morgan('dev'));
 
 
 //routes
+app.get('/', (req, res) => {
+    res.send('<h1>Welcome to Eden Aura API</h1>');
+});
+
 app.use('/api/v1/auth', authRoute);
 
 
 // Provide a default port if process.env.PORT is not set
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {    
     console.log(`Server is running on port http://localhost:${PORT}`);
