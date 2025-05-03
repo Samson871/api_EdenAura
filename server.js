@@ -28,7 +28,7 @@ app.use('/api/v1/auth', authRoute);
 
 
 // Provide a default port if process.env.PORT is not set
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ;
 
 app.listen(PORT, () => {    
     console.log(`Server is running on port http://localhost:${PORT}`);
