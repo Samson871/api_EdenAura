@@ -4,8 +4,8 @@ const {
 } = require("../helpers/authHelper");
 const User = require("../models/userModel");
 
-// const JWT = require("jsonwebtoken");
-// const dotenv = require("dotenv");
+const JWT = require("jsonwebtoken");
+const dotenv = require("dotenv");
 // User functions
 const registerController = async (req, res) => {
   try {
