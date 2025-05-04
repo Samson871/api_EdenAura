@@ -71,7 +71,7 @@ const loginController = async (req, res) => {
     if (!email) {
       return res.status(400).send({
         success: false,
-        message: "email is required",
+        message: "email or phone is required",
       });
     }
     if (!password) {
@@ -82,11 +82,11 @@ const loginController = async (req, res) => {
     }
 
     //check user
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { phone: email }] });
     if (!user) {
       return res.status(400).send({
-        success: false,
-        message: "No user found with this email",
+      success: false,
+      message: "No user found with this email or phone number",
       });
     }
     //compare password
@@ -155,6 +155,7 @@ const forgotPasswordController = async (req, res) => {
         message: "No user found with this email",
       });
     }
+    
     //hash password
     const hashedPassword = await createHashPassword(newPassword);
     user.password = hashedPassword;
