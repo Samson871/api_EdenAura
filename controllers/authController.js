@@ -6,11 +6,11 @@ const User = require("../models/userModel");
 
 const JWT = require("jsonwebtoken");
 const dotenv = require("dotenv");
-// User functions
+
 const registerController = async (req, res) => {
   try {
     const { name, email, password, phone, address, answer } = req.body;
-    //validation
+
     if (!name) {
       return res.status(400).send({ message: "Name is required" });
     }
@@ -29,7 +29,7 @@ const registerController = async (req, res) => {
     if (!answer) {
       return res.status(400).send({ message: "answer is required" });
     }
-    //check user
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(200).send({
@@ -67,7 +67,8 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    //validation
+
+
     if (!email) {
       return res.status(400).send({
         success: false,
@@ -81,7 +82,7 @@ const loginController = async (req, res) => {
       });
     }
 
-    //check user
+
     const user = await User.findOne({ $or: [{ email }, { phone: email }] });
     if (!user) {
       return res.status(400).send({
@@ -89,7 +90,7 @@ const loginController = async (req, res) => {
       message: "No user found with this email or phone number",
       });
     }
-    //compare password
+
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
       return res.status(400).send({
@@ -98,7 +99,6 @@ const loginController = async (req, res) => {
       });
     }
 
-    // generate token
     const token = await JWT.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
@@ -127,7 +127,7 @@ const loginController = async (req, res) => {
 const forgotPasswordController = async (req, res) => {
   try {
     const { email, answer, newPassword } = req.body;
-    //validation
+
     if (!email) {
       return res.status(400).send({
         success: false,
@@ -147,8 +147,7 @@ const forgotPasswordController = async (req, res) => {
       });
     }
 
-    //check user
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { phone: email }] });
     if (!user) {
       return res.status(404).send({
         success: false,
@@ -156,7 +155,6 @@ const forgotPasswordController = async (req, res) => {
       });
     }
     
-    //hash password
     const hashedPassword = await createHashPassword(newPassword);
     user.password = hashedPassword;
     await user.save();
