@@ -172,8 +172,48 @@ const forgotPasswordController = async (req, res) => {
   }
 };
 
+const updateProfileController = async (req, res) => {
+  try {
+    const { name, email, phone, address } = req.body;
+    console.log(req.user.id);
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.name = name;
+    user.email = email;
+    user.phone = phone;
+    user.address = address;
+
+    await user.save();
+
+    res.status(200).send({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in update profile controller",
+      error: error.message,
+    });
+  }
+};  
+
 module.exports = {
   registerController,
   loginController,
   forgotPasswordController,
+  updateProfileController,
 };

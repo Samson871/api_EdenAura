@@ -18,7 +18,7 @@ app.use('/api/v1/payment', paymentRoute);
 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 connectDb().then(() => {
     app.listen(PORT, () => {    

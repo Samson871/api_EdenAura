@@ -23,7 +23,6 @@ const requireSignIn= (req,res,next)=>{
       message: "Invalid token",
       error: error.message,
     });
-    
   }
 }
 
